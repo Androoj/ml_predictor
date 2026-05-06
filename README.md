@@ -1,12 +1,23 @@
 # ML Predictor
 
-ML Predictor — небольшое веб-приложение на **FastAPI** для демонстрации трех задач машинного обучения:
+**ML Predictor** — веб-приложение на FastAPI для демонстрации работы моделей машинного обучения через REST API и простой web-интерфейс.
+
+Проект содержит три сценария предсказаний:
 
 - классификация ирисов по размерам чашелистика и лепестка;
 - классификация вина по физико-химическим признакам;
 - предсказание выживания пассажира Титаника.
 
 Проект содержит REST API, HTML/CSS/JavaScript-интерфейс и отдельные скрипты обучения моделей на scikit-learn.
+
+## Возможности
+
+- REST API для каждой ML-модели.
+- Единый web-интерфейс для ввода данных и просмотра результата.
+- Валидация входных данных через Pydantic.
+- Отдельные скрипты обучения моделей.
+- Сохранение обученных моделей и metadata в `.pkl`-файлы.
+- Управление зависимостями через `uv`.
 
 ## Стек
 
@@ -25,7 +36,6 @@ ML Predictor — небольшое веб-приложение на **FastAPI**
   <img src="https://img.shields.io/badge/Joblib-Models-111111?style=flat-square&labelColor=111111&color=555555" alt="Joblib">
   <img src="https://img.shields.io/badge/HTML%20%2B%20CSS%20%2B%20JS-Frontend-111111?style=flat-square&labelColor=111111&color=555555" alt="Frontend">
 </p>
-
 
 ## Структура проекта
 
@@ -159,5 +169,6 @@ POST /api/titanic/predict
 
 ```http
 Swagger UI: http://localhost:8000/api/docs
+
 ReDoc: http://localhost:8000/api/redoc
 ```
