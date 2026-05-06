@@ -1,0 +1,30 @@
+[project]
+name = "ml-predictor"
+version = "0.1.0"
+description = "FastAPI-приложение для предсказаний ML-моделей Iris, Wine и Titanic"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.9",
+    "scikit-learn>=1.5.0",
+    "pandas>=2.2.0",
+    "numpy>=2.0.0",
+    "joblib>=1.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.8.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 79
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>ML Predictor - Ирисы, Вино, Титаник</title>
+    <link rel='stylesheet' href='/static/css/style.css'>
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap' rel='stylesheet'>
+</head>
+<body>
+    <div class='container'>
+        <header>
+            <h1>ML Predictor</h1>
+            <p>Выберите модель для предсказания</p>
+        </header>
+
+        <div class='selector'>
+            <button class='model-btn active' onclick='switchModel("iris", this)'>
+                <span class='icon'>🌸</span>
+                <span class='label'>Ирисы</span>
+            </button>
+            <button class='model-btn' onclick='switchModel("wine", this)'>
+                <span class='icon'>🍷</span>
+                <span class='label'>Вино</span>
+            </button>
+            <button class='model-btn' onclick='switchModel("titanic", this)'>
+                <span class='icon'>🚢</span>
+                <span class='label'>Титаник</span>
+            </button>
+        </div>
+
+        <!-- Iris Form -->
+        <div id='iris-section' class='model-section active'>
+            <div class='info-card'>
+                <h3>Классификация Ирисов</h3>
+                <p>Определение сорта ириса по размерам чашелистиков и лепестков.</p>
+                <div class='accuracy-badge'>Точность: ~96%</div>
+            </div>
+            
+            <form id='iris-form' class='prediction-form'>
+                <div class='form-grid'>
+                    <div class='input-group'>
+                        <label for='sepal_length'>
+                            Длина чашелистика
+                            <span class='tooltip' data-tooltip='Длина наружного лепестка цветка в сантиметрах'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='sepal_length' step='0.1' min='4' max='8' value='5.1' required>
+                        <span class='hint'>4.0 - 8.0 см</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='sepal_width'>
+                            Ширина чашелистика
+                            <span class='tooltip' data-tooltip='Ширина наружного лепестка цветка в сантиметрах'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='sepal_width' step='0.1' min='2' max='4.5' value='3.5' required>
+                        <span class='hint'>2.0 - 4.5 см</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='petal_length'>
+                            Длина лепестка
+                            <span class='tooltip' data-tooltip='Длина внутреннего лепестка цветка в сантиметрах'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='petal_length' step='0.1' min='1' max='7' value='1.4' required>
+                        <span class='hint'>1.0 - 7.0 см</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='petal_width'>
+                            Ширина лепестка
+                            <span class='tooltip' data-tooltip='Ширина внутреннего лепестка цветка в сантиметрах'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='petal_width' step='0.1' min='0.1' max='2.5' value='0.2' required>
+                        <span class='hint'>0.1 - 2.5 см</span>
+                    </div>
+                </div>
+                <button type='submit' class='predict-btn'>
+                    <span class='btn-text'>Предсказать сорт</span>
+                    <span class='btn-loader hidden'>⏳</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Wine Form -->
+        <div id='wine-section' class='model-section'>
+            <div class='info-card'>
+                <h3>Классификация Вина</h3>
+                <p>Определение сорта вина по физико-химическим показателям.</p>
+                <div class='accuracy-badge'>Точность: ~98%</div>
+            </div>
+            
+            <form id='wine-form' class='prediction-form'>
+                <div class='form-grid three-cols'>
+                    <div class='input-group'>
+                        <label for='alcohol'>
+                            Алкоголь
+                            <span class='tooltip' data-tooltip='Содержание алкоголя в процентах по объему'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='alcohol' step='0.1' min='11' max='15' value='13.2' required>
+                        <span class='hint'>11.0 - 15.0 %</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='malic_acid'>
+                            Яблочная кислота
+                            <span class='tooltip' data-tooltip='Содержание яблочной кислоты, влияет на кислотность вина'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='malic_acid' step='0.01' min='0.5' max='6' value='1.78' required>
+                        <span class='hint'>0.5 - 6.0 г/л</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='ash'>
+                            Зола
+                            <span class='tooltip' data-tooltip='Содержание минеральных веществ после сжигания вина'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='ash' step='0.01' min='1' max='3.5' value='2.14' required>
+                        <span class='hint'>1.0 - 3.5 г/100мл</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='alcalinity_of_ash'>
+                            Щелочность золы
+                            <span class='tooltip' data-tooltip='pH золы, показывает щелочность вина'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='alcalinity_of_ash' step='0.1' min='10' max='30' value='11.2' required>
+                        <span class='hint'>10.0 - 30.0</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='magnesium'>
+                            Магний
+                            <span class='tooltip' data-tooltip='Содержание магния в мг/л, влияет на горечь'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='magnesium' step='1' min='50' max='170' value='100' required>
+                        <span class='hint'>50 - 170 мг/л</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='total_phenols'>
+                            Всего фенолов
+                            <span class='tooltip' data-tooltip='Общее содержание фенольных соединений, влияет на вкус'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='total_phenols' step='0.01' min='0.5' max='4' value='2.65' required>
+                        <span class='hint'>0.5 - 4.0 г/л</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='flavanoids'>
+                            Флавоноиды
+                            <span class='tooltip' data-tooltip='Содержание флавоноидов — антиоксидантов, влияет на цвет'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='flavanoids' step='0.01' min='0.1' max='5' value='2.76' required>
+                        <span class='hint'>0.1 - 5.0 г/л</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='nonflavanoid_phenols'>
+                            Нефлавоноидные фенолы
+                            <span class='tooltip' data-tooltip='Содержание нефлавоноидных фенолов'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='nonflavanoid_phenols' step='0.01' min='0.1' max='1' value='0.26' required>
+                        <span class='hint'>0.1 - 1.0 г/л</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='proanthocyanins'>
+                            Проантоцианидины
+                            <span class='tooltip' data-tooltip='Содержание дубильных веществ, влияет на терпкость'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='proanthocyanins' step='0.01' min='0.1' max='4' value='1.28' required>
+                        <span class='hint'>0.1 - 4.0 мг/л</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='color_intensity'>
+                            Интенсивность цвета
+                            <span class='tooltip' data-tooltip='Оптическая плотность вина при 420 и 520 нм'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='color_intensity' step='0.1' min='1' max='13' value='4.38' required>
+                        <span class='hint'>1.0 - 13.0</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='hue'>
+                            Оттенок
+                            <span class='tooltip' data-tooltip='Цветовой оттенок вина (0=желтый, 1=красный)'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='hue' step='0.01' min='0.4' max='1.8' value='1.05' required>
+                        <span class='hint'>0.4 - 1.8</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='od280_od315'>
+                            OD280/OD315
+                            <span class='tooltip' data-tooltip='Отношение оптической плотности при 280 и 315 нм'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='od280_od315' step='0.01' min='1' max='4' value='3.4' required>
+                        <span class='hint'>1.0 - 4.0</span>
+                    </div>
+                    <div class='input-group full-width'>
+                        <label for='proline'>
+                            Пролин
+                            <span class='tooltip' data-tooltip='Содержание аминокислоты пролина в мг/л'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='proline' step='1' min='200' max='1700' value='1050' required>
+                        <span class='hint'>200 - 1700 мг/л</span>
+                    </div>
+                </div>
+                <button type='submit' class='predict-btn'>
+                    <span class='btn-text'>Предсказать сорт вина</span>
+                    <span class='btn-loader hidden'>⏳</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Titanic Form -->
+        <div id='titanic-section' class='model-section'>
+            <div class='info-card titanic'>
+                <h3>🚢 Выживание на Титанике</h3>
+                <p>Предсказание вероятности выживания на основе данных пассажира.</p>
+                <div class='accuracy-badge'>Точность: ~82%</div>
+            </div>
+            
+            <form id='titanic-form' class='prediction-form'>
+                <div class='form-grid'>
+                    <div class='input-group'>
+                        <label for='pclass'>
+                            Класс билета
+                            <span class='tooltip' data-tooltip='Класс обслуживания: 1-й (люкс), 2-й (комфорт), 3-й (эконом)'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <select id='pclass' required>
+                            <option value='1'>1 класс (Первый, люкс)</option>
+                            <option value='2'>2 класс (Второй, комфорт)</option>
+                            <option value='3' selected>3 класс (Третий, эконом)</option>
+                        </select>
+                    </div>
+                    <div class='input-group'>
+                        <label for='sex'>
+                            Пол
+                            <span class='tooltip' data-tooltip='Женщины и дети имели приоритет при эвакуации'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <select id='sex' required>
+                            <option value='0'>Женщина</option>
+                            <option value='1' selected>Мужчина</option>
+                        </select>
+                    </div>
+                    <div class='input-group'>
+                        <label for='age'>
+                            Возраст
+                            <span class='tooltip' data-tooltip='Возраст пассажира в годах. Дети до 16 лет имели приоритет'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='age' step='1' min='0' max='100' value='30' required>
+                        <span class='hint'>0 - 100 лет</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='sibsp'>
+                            Братья/сестры или супруг
+                            <span class='tooltip' data-tooltip='Количество братьев, сестер или супругов на борту'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='sibsp' step='1' min='0' max='8' value='0' required>
+                        <span class='hint'>0 - 8 человек</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='parch'>
+                            Родители или дети
+                            <span class='tooltip' data-tooltip='Количество родителей или детей на борту'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='parch' step='1' min='0' max='6' value='0' required>
+                        <span class='hint'>0 - 6 человек</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='fare'>
+                            Стоимость билета
+                            <span class='tooltip' data-tooltip='Цена билета в фунтах стерлингов 1912 года (~$100 сегодня)'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <input type='number' id='fare' step='0.01' min='0' max='600' value='32.2' required>
+                        <span class='hint'>$0 - $600 (£1912)</span>
+                    </div>
+                    <div class='input-group'>
+                        <label for='embarked'>
+                            Порт посадки
+                            <span class='tooltip' data-tooltip='Порт, где пассажир сел на корабль. Southampton — основной порт'>
+                                <span class='tooltip-icon'>?</span>
+                            </span>
+                        </label>
+                        <select id='embarked' required>
+                            <option value='0' selected>Southampton (S) — Англия</option>
+                            <option value='1'>Cherbourg (C) — Франция</option>
+                            <option value='2'>Queenstown (Q) — Ирландия</option>
+                        </select>
+                    </div>
+                </div>
+                <button type='submit' class='predict-btn titanic-btn'>
+                    <span class='btn-text'>🚢 Проверить шансы выживания</span>
+                    <span class='btn-loader hidden'>⏳</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Results -->
+        <div id='result-container' class='result-container hidden'>
+            <div class='result-card' id='result-card'>
+                <h3 id='result-title'>Результат предсказания</h3>
+                <div class='prediction-main'>
+                    <span class='prediction-class' id='predicted-class'>-</span>
+                    <span class='confidence' id='confidence'>-</span>
+                </div>
+                <div id='survival-meter' class='survival-meter hidden'>
+                    <div class='meter-label'>Шанс выживания</div>
+                    <div class='meter-bar'>
+                        <div class='meter-fill' id='meter-fill'></div>
+                    </div>
+                    <div class='meter-value' id='meter-value'>0%</div>
+                </div>
+                <div class='probabilities' id='probabilities'></div>
+            </div>
+        </div>
+    </div>
+
+    <script src='/static/js/app.js'></script>
+</body>
+</html>
