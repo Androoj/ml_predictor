@@ -10,15 +10,22 @@ ML Predictor — небольшое веб-приложение на **FastAPI**
 
 ## Стек
 
-- Python 3.12+
-- FastAPI
-- Pydantic
-- Uvicorn
-- scikit-learn
-- pandas
-- NumPy
-- Joblib
-- HTML/CSS/JavaScript
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12-111111?style=flat-square&labelColor=111111&color=555555" alt="Python 3.12">
+  <img src="https://img.shields.io/badge/FastAPI-API-111111?style=flat-square&labelColor=111111&color=555555" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Pydantic-Validation-111111?style=flat-square&labelColor=111111&color=555555" alt="Pydantic">
+  <img src="https://img.shields.io/badge/Uvicorn-ASGI-111111?style=flat-square&labelColor=111111&color=555555" alt="Uvicorn">
+  <img src="https://img.shields.io/badge/uv-Package%20Manager-111111?style=flat-square&labelColor=111111&color=555555" alt="uv">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/scikit--learn-ML-111111?style=flat-square&labelColor=111111&color=555555" alt="scikit-learn">
+  <img src="https://img.shields.io/badge/Pandas-Data-111111?style=flat-square&labelColor=111111&color=555555" alt="Pandas">
+  <img src="https://img.shields.io/badge/NumPy-Computing-111111?style=flat-square&labelColor=111111&color=555555" alt="NumPy">
+  <img src="https://img.shields.io/badge/Joblib-Models-111111?style=flat-square&labelColor=111111&color=555555" alt="Joblib">
+  <img src="https://img.shields.io/badge/HTML%20%2B%20CSS%20%2B%20JS-Frontend-111111?style=flat-square&labelColor=111111&color=555555" alt="Frontend">
+</p>
+
 
 ## Структура проекта
 
@@ -110,65 +117,47 @@ uv run uvicorn app.main:app --reload
 По умолчанию приложение будет доступно на:
 
 ```text
-http://localhost:8000
+http://127.0.0.1:8000
 ```
 
 ## API
 
 ### Web UI
 
-```text
+```http
 GET /
 ```
 
 ### Healthcheck
 
-```text
+```http
 GET /health
 ```
 
 ### Iris
 
-```text
+```http
 GET  /api/iris/info
 POST /api/iris/predict
 ```
 
 ### Wine
 
-```text
+```http
 GET  /api/wine/info
 POST /api/wine/predict
 ```
 
 ### Titanic
 
-```text
+```http
 GET  /api/titanic/info
 POST /api/titanic/predict
 ```
 
 ### Документация API
 
-```text
+```http
 Swagger UI: http://localhost:8000/api/docs
-ReDoc:      http://localhost:8000/api/redoc
+ReDoc: http://localhost:8000/api/redoc
 ```
-
-## Что было улучшено
-
-- Исправлены зависимости `fastapi[standard]` и `uvicorn[standard]`.
-- Добавлены корректные `__init__.py` для пакетов.
-- Модели кэшируются и не загружаются заново при каждом запросе.
-- Ошибка отсутствующих `.pkl`-файлов возвращается как понятный `503 Service Unavailable`.
-- Pydantic-схемы стали строже: лишние поля запрещены, диапазоны значений заданы в схемах.
-- Ответы `/info` дополнены метриками модели.
-- Добавлен единый формат ошибок валидации.
-- Убран прямой доступ к приватным полям моделей из роутеров.
-- ML-скрипты обучения используют общую функцию сохранения артефактов.
-- Frontend убрал дублирование сбора полей и показывает ошибки API на странице.
-- Все добавленные docstring-и написаны на русском языке.
-
-## Примечания
-
-Тесты в проект не добавлялись по отдельному требованию.
